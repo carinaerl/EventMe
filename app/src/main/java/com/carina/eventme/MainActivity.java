@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,8 +29,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -42,11 +45,13 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CAMERA = 1;
+    private static final int REQUEST_CODE_GALLERY = 0;
     private static Bitmap bitmap;
     private static boolean loading;
     private static String date;
     private static String time;
     private static boolean sorryNotFound = false;
+    private static results fragment;
 
 
     @Override
@@ -117,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             //Continue only if the File was successfully created
             Log.d("camera", "12");
             if (photoFileForCam != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.carina.eventme.files", photoFileForCam);
+                Uri photoURI = FileProvider.getUriForFile(this, "com.carina.eventme.file", photoFileForCam);
                 Log.d("camera", "13");
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 Log.d("camera", "14");
@@ -143,6 +148,16 @@ public class MainActivity extends AppCompatActivity {
             // try to delete the currentPhotoPath
             File toBeDeleted = new File(currentPhotoPathForCam);
             toBeDeleted.delete();
+            
+        } else if (requestCode == REQUEST_CODE_GALLERY){
+            Uri imageUri = data.getData();
+            InputStream imageStream = null;
+            try {
+                imageStream = getContentResolver().openInputStream(imageUri);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+            MainActivity.bitmap = BitmapFactory.decodeStream(imageStream);
         }
         // if you forget to do "setContentView(R.layout.activity_confirm)", not only the screen stays on wrong activity, but you also get a nullpointerexception because *findViewById* won't even find "imageview"
         setContentView(R.layout.activity_confirm);
@@ -164,6 +179,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickNo(View view) {setContentView(R.layout.activity_main);
+    }
+
+    public void onClickGallery(View view) {
+    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+    photoPickerIntent.setType("image/*");
+    startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -197,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 byte[] fileContents = Files.readAllBytes((java.nio.file.Path) path);
 
                 //establishing connection with the API:
-                URL url = new URL("https://partyholic-eu-v2.herokuapp.com/");
+                URL url = new URL("https://eventmet.herokuapp.com/imgt");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setRequestProperty("Content-Type", "image/jpeg");
@@ -236,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.date = (String) jsonObject.get("date");
                 MainActivity.time = (String) jsonObject.get("time");
 
+
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -252,6 +274,13 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             setContentView(R.layout.activity_result);
+            MainActivity.fragment = new results(
+                    MainActivity.date, MainActivity.time);
+            //open fragment:
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .commit();
             MainActivity.loading=false;
         }
     }

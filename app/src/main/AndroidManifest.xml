@@ -3,7 +3,7 @@
     package="com.carina.eventme">
 
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -31,7 +31,7 @@
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.carina.eventme.files"
+            android:authorities="com.carina.eventme.file"
             android:exported="false"
             android:grantUriPermissions="true">
             <!--                if using Android Studio, hold Ctrl and left click the file name to see where it is -->

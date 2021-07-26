@@ -11,13 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Sorry! The Picture didn't work! \n Please try again!"
             android:textAlignment="center"
-            android:textSize="20dp"
-            android:layout_gravity="center"></TextView>
+            android:textColor="@color/white"
+            android:textSize="34sp"></TextView>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

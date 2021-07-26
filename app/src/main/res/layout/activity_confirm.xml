@@ -5,22 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".confirm"
+    android:layout_gravity="center_horizontal"
     android:background="@drawable/gradient_background">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:weightSum="100">
+    <include layout="@layout/spacehorizontal"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please check if you want to use this Picture!"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="34sp" />
+
+    <include layout="@layout/spacehorizontal"/>
+
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="61"
+        android:src="@drawable/logo"
         android:id="@+id/image_view"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:weightSum="103">
+        android:weightSum="103"
+        android:layout_gravity="center"
+        android:gravity="center">
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -29,6 +49,7 @@
             android:text="Use Picture"
             android:onClick="onClickYes"
             tools:ignore="OnClick" />
+        <include layout="@layout/spacevertical"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
