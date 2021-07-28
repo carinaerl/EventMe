@@ -18,10 +18,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private static Bitmap bitmap;
     private static boolean loading;
     private static String date;
+    private static String title;
     private static String time;
     private static boolean sorryNotFound = false;
     private static results fragment;
@@ -187,6 +190,17 @@ public class MainActivity extends AppCompatActivity {
     startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
     }
 
+    public void addEvent(View view) {
+        TextView titelevent = findViewById(R.id.titleevent);
+        TextView timeevent = findViewById(R.id.zeit);
+        Intent calenderIntent = new Intent(Intent.ACTION_INSERT);
+        calenderIntent.setData(CalendarContract.CONTENT_URI);
+        calenderIntent.putExtra(CalendarContract.Events.TITLE,titelevent.getText().toString());
+        calenderIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, timeevent.getText().toString());
+
+
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class DealingWithServerTask extends AsyncTask<Void, Void, Void>{
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -198,9 +212,11 @@ public class MainActivity extends AppCompatActivity {
                 FileOutputStream fileOutputStream = null;
                 File file = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 File dir = new File(file.getAbsolutePath() + "/MyPics");
+
                 dir.mkdirs();
                 String fileName = String.format("%d.jpg", System.currentTimeMillis());
                 File outFile = new File(dir, fileName);
+                //compressing the size
                 int quality = 60;
                 do {
                     fileOutputStream = new FileOutputStream(outFile);
@@ -214,15 +230,22 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }while (outFile.length() > 2000000);
+                //from file to bytearray
+                //getting the image path and read it in bytes
                 Path path = Paths.get(outFile.getAbsolutePath());
-                byte[] fileContents = Files.readAllBytes((java.nio.file.Path) path);
+                byte[] fileContents = Files.readAllBytes(path);
+                Log.d("compress", "1");
 
                 //establishing connection with the API:
                 URL url = new URL("https://eventmet.herokuapp.com/imgt");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                Log.d("connection", "1");
                 httpURLConnection.setRequestMethod("POST");
+                Log.d("connection", "12");
                 httpURLConnection.setRequestProperty("Content-Type", "image/jpeg");
+                Log.d("connection", "13");
                 httpURLConnection.setRequestProperty("Content-Disposition", "form-data;name=imageset");
+                Log.d("connection", "14");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoOutput(true);//#
 
@@ -231,31 +254,35 @@ public class MainActivity extends AppCompatActivity {
                 DataOutputStream os = new DataOutputStream(out);
                 //writing the image into the data output stream: in other words: send it!
                 os.write(fileContents, 0, fileContents.length);
+                Log.d("connection", "15");
 
                 //this line should be included!
                 if (httpURLConnection.getResponseCode() != 200){
                     System.out.println("SERVER ERROR CONNECTION ! : ------------     " + httpURLConnection.getResponseCode());
                     MainActivity.date = "Unknown";
+                    MainActivity.title = "Unknown";
                     MainActivity.time = "Unknown";
                     return null;
                 }
+                //reading the response and saving into a Stringtext
                 BufferedReader bufferedReader;
                 bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                String reponseLine;
+                String responseLine;
                 StringBuilder responseWhole = new StringBuilder();
-                while ((reponseLine = bufferedReader.readLine())!= null){
-                    responseWhole.append(reponseLine);
+                while ((responseLine = bufferedReader.readLine())!= null){
+                    responseWhole.append(responseLine);
                 }
                 bufferedReader.close();
 
                 //responseWhole must be parsed with a json parser:
                 JSONObject jsonObject = new JSONObject(responseWhole.toString());
                 System.out.println("////////////////////////////////////////");
-                System.out.println(reponseLine);
+                System.out.println(responseLine);
                 System.out.println("////////////////////////////////////////");
-                //finally getting the values of date, time :
+                //finally getting the values of date, time, title :
                 MainActivity.date = (String) jsonObject.get("date");
                 MainActivity.time = (String) jsonObject.get("time");
+                MainActivity.title = (String) jsonObject.get("title");
 
 
             } catch (Exception e){
@@ -275,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
             }
             setContentView(R.layout.activity_result);
             MainActivity.fragment = new results(
-                    MainActivity.date, MainActivity.time);
+                    MainActivity.date, MainActivity.time, MainActivity.title);
             //open fragment:
             getSupportFragmentManager()
                     .beginTransaction()

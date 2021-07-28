@@ -31,6 +31,18 @@
             android:orientation="vertical">
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Platzhalter Titel"
+                android:textColor="@color/white"
+                android:textSize="21dp"
+                android:textAlignment="center"
+                android:id="@+id/titleevent"
+                android:gravity="center_horizontal"/>
+
+
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -50,6 +62,8 @@
                 android:textAlignment="center"
                 android:id="@+id/zeit"
                 android:layout_gravity="center_horizontal"/>
+
+
 
         </LinearLayout>
 
@@ -77,7 +91,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="40"
-                android:text="Add to Calender" />
+                android:text="Add to Calender"
+                android:onClick="addEvent"
+                tools:ignore="OnClick" />
         </LinearLayout>
 
     </LinearLayout>
