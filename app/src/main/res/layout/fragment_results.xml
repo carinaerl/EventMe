@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".results"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/background_picture">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,12 +17,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your Event:"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="50dp"
             android:layout_weight="25"
-            />
+            android:fontFamily="@font/bangers"
+            android:gravity="center"
+            android:text="Your Event:"
+            android:textColor="@color/black"
+            android:textSize="50dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,37 +32,39 @@
             android:orientation="vertical">
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Platzhalter Titel"
-                android:textColor="@color/white"
-                android:textSize="21dp"
-                android:textAlignment="center"
+            <EditText
                 android:id="@+id/titleevent"
-                android:gravity="center_horizontal"/>
-
-
-
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Platzhalter Datum"
-                android:textColor="@color/white"
-                android:textSize="21dp"
+                android:fontFamily="casual"
+                android:gravity="center_horizontal"
+                android:text="Platzhalter Titel"
                 android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="21dp" />
+
+
+            <EditText
                 android:id="@+id/datum"
-                android:gravity="center_horizontal" />
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Platzhalter Zeit"
-                android:textColor="@color/white"
-                android:textSize="21dp"
+                android:fontFamily="casual"
+                android:gravity="center_horizontal"
+                android:text="Platzhalter Datum"
                 android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="21dp" />
+
+            <EditText
                 android:id="@+id/zeit"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="casual"
+                android:text="Platzhalter Zeit"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="21dp" />
 
 
 
@@ -81,6 +84,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="40"
+                android:background="#FFA6A6"
+                android:fontFamily="casual"
                 android:onClick="onClickNo"
                 android:text="Go Back"
                 tools:ignore="OnClick" />
@@ -91,8 +96,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="40"
-                android:text="Add to Calender"
+                android:background="#FFA6A6"
+                android:fontFamily="casual"
                 android:onClick="addEvent"
+                android:text="Add to Calender"
                 tools:ignore="OnClick" />
         </LinearLayout>
 

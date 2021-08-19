@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".confirm"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/background_picture">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,12 +18,14 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:fontFamily="@font/bangers"
+        android:gravity="center"
         android:text="Please check if you want to use this Picture!"
         android:textAlignment="center"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="34sp" />
+        android:textColor="@color/black"
+        android:textSize="48sp" />
 
     <include layout="@layout/spacehorizontal"/>
 
@@ -41,22 +43,29 @@
         android:weightSum="103"
         android:layout_gravity="center"
         android:gravity="center">
+
+
         <Button
+            android:id="@+id/button_no"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/button_yes"
             android:layout_weight="50"
-            android:text="Use Picture"
-            android:onClick="onClickYes"
+            android:background="#FFA6A6"
+            android:fontFamily="casual"
+            android:onClick="onClickNo"
+            android:text="Don't Use"
             tools:ignore="OnClick" />
         <include layout="@layout/spacevertical"/>
+
         <Button
+            android:id="@+id/button_yes"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/button_no"
             android:layout_weight="50"
-            android:text="Don't Use"
-            android:onClick="onClickNo"
+            android:background="#FFA6A6"
+            android:fontFamily="casual"
+            android:onClick="onClickYes"
+            android:text="Use Picture"
             tools:ignore="OnClick" />
 
     </LinearLayout>

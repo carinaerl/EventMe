@@ -4,27 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sorry"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/background_picture"
+    tools:context=".sorry">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="casual"
             android:text="Sorry! The Picture didn't work! \n Please try again!"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="34sp"></TextView>
+            android:textColor="@color/black"
+            android:textSize="60sp"></TextView>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go Back!"
             android:onClick="onClickNo"
+            android:text="Go Back!"
             tools:ignore="OnClick" />
 
     </LinearLayout>

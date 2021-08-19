@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_picture"
+    android:orientation="vertical"
+    tools:context=".splashscreen"
+    android:weightSum="100">
+
+
+
+    <ImageView
+        android:id="@+id/splashimage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50"
+        android:paddingTop="20sp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/splashtextone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        android:fontFamily="@font/bangers"
+        android:gravity="center"
+        android:text="EventMe"
+        android:textColor="#000000"
+        android:textSize="60sp" />
+
+
+    <TextView
+        android:id="@+id/splashtexttwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="Scan a Poster!"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
+
+</LinearLayout>

@@ -4,55 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/background_picture"
+    tools:context=".MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="100">
-        <include layout="@layout/spacehorizontal"/>
+
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
-            android:text="Take a Picture of an Event "
-            android:textColor="@color/white"
+            android:layout_weight="25"
+            android:fontFamily="@font/bangers"
+            android:gravity="center_horizontal"
+            android:text="Scan a poster and add to your Calender!"
             android:textAlignment="center"
-            android:textSize="48sp"
-            android:gravity="center_horizontal" />
-
+            android:textColor="@color/black"
+            android:textSize="48sp" />
+        <include layout="@layout/spacehorizontal"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="61"
-            android:src="@drawable/logo"/>
+            android:src="@drawable/logo" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"
-            android:weightSum="100"
             android:layout_gravity="center"
-            android:gravity="center_horizontal">
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="45"
-                android:text="Take Picture"
-                android:onClick="onClickCamera"></Button>
-            <include layout="@layout/spacevertical"/>
+            android:layout_weight="10"
+            android:gravity="center"
+            android:weightSum="103">
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="45"
-                android:text="Open Gallery"
-                android:onClick="onClickGallery"/>
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="#FFA6A6"
+                android:fontFamily="casual"
+                android:onClick="onClickCamera"
+                android:text="Take Picture"
+                android:textColor="#000000"></Button>
+
+            <include layout="@layout/spacevertical" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="#FFA6A6"
+                android:fontFamily="casual"
+                android:onClick="onClickGallery"
+                android:text="Open Gallery" />
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

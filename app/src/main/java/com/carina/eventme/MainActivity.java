@@ -22,6 +22,7 @@ import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,24 +56,34 @@ public class MainActivity extends AppCompatActivity {
     private static String time;
     private static boolean sorryNotFound = false;
     private static results fragment;
+    EditText titleevent;
+    EditText dateevent;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.checkPermissionThenInitialize();
+
+
     }
 
     public void checkPermissionThenInitialize() {
         setContentView(R.layout.activity_permission);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
             this.initializePlease();
         }else {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_CALENDAR,
+                    Manifest.permission.WRITE_CALENDAR,
                     Manifest.permission.INTERNET,
                     Manifest.permission.CAMERA,
             }, 1);
@@ -87,8 +98,10 @@ public class MainActivity extends AppCompatActivity {
     || grantResults[0]!= PackageManager.PERMISSION_GRANTED
     || grantResults[1]!= PackageManager.PERMISSION_GRANTED
             || grantResults[2]!= PackageManager.PERMISSION_GRANTED
-            || grantResults[3]!= PackageManager.PERMISSION_GRANTED){
-        Toast.makeText(this,"PERMISSION DENIED1", Toast.LENGTH_SHORT).show();
+            || grantResults[3]!= PackageManager.PERMISSION_GRANTED
+            || grantResults[4]!= PackageManager.PERMISSION_GRANTED
+            || grantResults[5]!= PackageManager.PERMISSION_GRANTED){
+        Toast.makeText(this,"PERMISSION DENIED!", Toast.LENGTH_SHORT).show();
     } else {
         this.initializePlease();
     }
@@ -190,16 +203,23 @@ public class MainActivity extends AppCompatActivity {
     startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
     }
 
-    public void addEvent(View view) {
-        TextView titelevent = findViewById(R.id.titleevent);
-        TextView timeevent = findViewById(R.id.zeit);
-        Intent calenderIntent = new Intent(Intent.ACTION_INSERT);
-        calenderIntent.setData(CalendarContract.CONTENT_URI);
-        calenderIntent.putExtra(CalendarContract.Events.TITLE,titelevent.getText().toString());
-        calenderIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, timeevent.getText().toString());
+   public void addEvent(View view) {
+       titleevent = findViewById(R.id.titleevent);
+       dateevent = findViewById(R.id.datum);
+      Intent calenderintent = new Intent(Intent.ACTION_INSERT);
+      calenderintent.setData(CalendarContract.Events.CONTENT_URI);
+         calenderintent.putExtra(CalendarContract.Events.TITLE ,  titleevent.getText().toString());
+         calenderintent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, dateevent.getText().toString());
+         if (calenderintent.resolveActivity(getPackageManager())!= null){
+               startActivity(calenderintent);
+         } else {
+              Toast.makeText(MainActivity.this, "There is no app that can support this action",
+                    Toast.LENGTH_SHORT).show();
+         }
+        }
 
 
-    }
+
 
     @SuppressLint("StaticFieldLeak")
     private class DealingWithServerTask extends AsyncTask<Void, Void, Void>{
@@ -244,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("connection", "12");
                 httpURLConnection.setRequestProperty("Content-Type", "image/jpeg");
                 Log.d("connection", "13");
-                httpURLConnection.setRequestProperty("Content-Disposition", "form-data;name=imageset");
+                httpURLConnection.setRequestProperty("Content-Disposition", "form-data;name=image");
                 Log.d("connection", "14");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoOutput(true);//#
@@ -280,9 +300,9 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(responseLine);
                 System.out.println("////////////////////////////////////////");
                 //finally getting the values of date, time, title :
-                MainActivity.date = (String) jsonObject.get("date");
-                MainActivity.time = (String) jsonObject.get("time");
-                MainActivity.title = (String) jsonObject.get("title");
+                MainActivity.date = (String) jsonObject.get("text");
+                MainActivity.time = (String) jsonObject.get("text");
+                MainActivity.title = (String) jsonObject.get("text");
 
 
             } catch (Exception e){
